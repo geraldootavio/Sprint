@@ -1,55 +1,92 @@
-import { auth, login } from "./auth.js";
-import { createUser } from "./user.js";
+const categoryImagens = {
+  1: 'assets/img/icon/icones/compra.png',
+  2: 'assets/img/icon/icones/casa.png',
+  3: 'assets/img/icon/icones/casa.png',
+  6: 'assets/img/icon/icones/salario.png',
+}
 
-const form = document.getElementById("register-form");
+export async function loadAllRegisters(useFilter, text) {
+  const res = await fetch("/entries");
 
-const name = document.getElementById("name");
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const confirmPassword = document.getElementById("confirm-password");
-
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
-
-  const formData = {
-    name: name.value,
-    email: email.value,
-    password: password.value,
-    confirmPassword: confirmPassword.value,
-  };
-
-  if (formData.name === "") {
-    alert("Forneça um nome");
-    return;
+  if (!res.ok) {
+    console.error("Erro ao carregar registros");
+    return null;
   }
 
-  if (formData.email === "") {
-    alert("Forneça um email");
-    return;
-  }
+  let registers = await res.json();
 
-  if (formData.password === "") {
-    alert("Forneça uma senha");
-    return;
-  }
+  const divContaner = document.getElementById('elements');
 
-  if (formData.password !== formData.confirmPassword) {
-    alert("As senhas precisão ser iguais");
-    return;
-  }
+  registers = useFilter ? registers.filter(element => element.label.toLowerCase().includes(text.toLowerCase())) :  registers
 
-  const newUser = await createUser({
-    name: formData.name,
-    email: formData.email,
-    password: formData.password,
+  registers.forEach(element => {
+
+    const div = document.createElement('div');
+    div.className = "container2";
+
+    const img = document.createElement('img');
+
+    //Ajustar a constante lÃ¡ em cima para receber todas as imagens
+    //img.src = categoryImagens[element.categoryId]
+    img.src = 'assets/img/icon/icones/salario.png'
+    
+    const spanTitle = document.createElement('span');
+
+    spanTitle.innerHTML = element.label
+    spanTitle.className = 'info'
+
+    const valueTitle = document.createElement('span');
+
+    const valueStyled = element.type === 'expense' ? 'red' : 'green'
+
+    valueTitle.innerHTML = decimalFormat(element.value)
+    valueTitle.className = 'value'
+    valueTitle.style = `color: ${valueStyled}`
+
+    div.appendChild(img)
+    div.appendChild(spanTitle)
+    div.appendChild(valueTitle)
+
+    divContaner.appendChild(div)
+
   });
 
-  if (!newUser) {
-    alert("Erro interno ao criar usuário, tente novamente");
-    return;
+  const total = registers.reduce((memo, currenc) => {
+    memo =  currenc.type ===  'expense' ? memo - currenc.value : memo + currenc.value
+    return memo
+  }, 0);
+
+  const divTotal = document.getElementById('total');
+
+  divTotal.innerHTML = decimalFormat(total);
+  divTotal.style = total > 0 ? 'color: green' : "color: red";
+
+
+  const previousMonth = document.getElementById('previousMonth');
+  const currentMonth = document.getElementById('currentMonth');
+
+  //colocar os valores aqui
+
+}
+
+const decimalFormat = (value) =>  new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
+
+
+function myFunction(val) {
+  alert("The input value has changed. The new value is: " + val);
+}
+
+
+const pesquisar = document.getElementById('pesquisar');
+
+pesquisar.addEventListener("input", (e) => {
+  const elementsToRemove = document.getElementsByClassName('container2')
+  while(elementsToRemove.length > 0) {
+    elementsToRemove[0].parentNode.removeChild(elementsToRemove[0]);
   }
 
-  login({ id: newUser.id, name: newUser.name, email: newUser.email });
-});
+  loadAllRegisters(true, e.target.value)
+}, false);
 
-if (auth()) window.location.replace("/");
+
+loadAllRegisters();

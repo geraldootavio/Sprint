@@ -12,67 +12,31 @@
     <main>
       <div class="card">
         <div class="form">
-          <div class="container" style="background-color: red">
-            <span class="info">Mês Atual</span>
-            <span class="value">-R$ 957,00</span>
-          </div>
-
-          <div class="container" style="background-color: green">
-            <span class="info">Último mês</span>
-            <span class="value">+R$ 662,00</span>
-          </div>
-
-          <div id="pesquisar">
-            <img src="assets/img/icon/icones/tiroaoalvo.png" id="btnBusca" alt="Buscar"
-            class="searchImg"/>
-            <input type="text" id="Pesquisar" placeholder="pesquisar"/>
-            <img src="assets/img/icon/icones/loupe.png" alt="loupe"
-            class="loupe">
-          </div>
+          <div class="registryContainer">
+            <div class="container" style="background-color: red">
+              <span class="info">Mês Atual</span>
+              <span id="previousMonth" class="value">-R$ 957,00</span>
+            </div>
+            <div class="container" style="background-color: green">
+              <span class="info">Último mês</span>
+              <span id="currentMonth" class="value">+R$ 662,00</span>
+            </div>
+            <div class="searchContainer">
+              <img src="assets/img/icon/icones/tiroaoalvo.png" id="btnBusca" alt="Buscar" class="searchImg"/>
+              <input type="text" id="pesquisar" style="width: 100%;" class="icon" placeholder="Pesquisar"/>
+            </div>
+        </div>
       </div>
     </main>
     <main>
       <div class="card">
         <div class="form">
-          <h1>Registros</h1>
-          <div class="titulo1">
-          <h3>24 de Setembro de 2024 </h3>
-          <h3 style="color: green;">+R$ 230,40</h3>
-          </div>
-          <div class="container2">
-            <img src="assets/img/icon/icones/compra.png" class="searchImg">
-            <span class="info">Padaria do Zé - Salgado</span>
-            <span class="value">
-              <div style="color: red;">-R$ 06,00</div>
-            </span>
-          </div>
-          <div class="container2">
-            <img src="assets/img/icon/icones/casa.png" class="searchImg">
-            <span class="info">Aluguel</span>
-            <span class="value">
-               <div style="color: red;">-R$ 700,00</div>
-            </span>
-          </div>
-          <div class="container2">
-            <img src="assets/img/icon/icones/compra.png" class="searchImg">
-            <span class="info">Conta de Luz</span>
-            <span class="value">
-              <div style="color: red;">-R$ 250,00</div>
-            </span>
-         </div>
-          <div class="container2">
-            <img src="assets/img/icon/icones/salario.png" class="searchImg">
-            <span class="info">Salario</span>
-            <span class="value">
-               <div style="color: green;">+R$ 1.412,00</div>
-            </span>
-          </div>
-          <div class="container2">
-            <img src="assets/img/icon/icones/compra.png" class="searchImg">
-            <span class="info">Padaria do Zé - Salgado</span>
-            <span class="value">
-              <div style="color: red;">-R$ 06,00</div>
-            </span>
+          <div id="elements" class="registryContainer">
+            <span class="registry">Registros</span>
+            <div class="titulo1">
+              <h3>24 de Setembro de 2024 </h3>
+              <h3 id="total"></h3>
+            </div>
         </div>
       </div>
     </main>
