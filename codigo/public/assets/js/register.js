@@ -71,22 +71,31 @@ export async function loadAllRegisters(useFilter, text) {
 
 const decimalFormat = (value) =>  new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
 
-
-function myFunction(val) {
-  alert("The input value has changed. The new value is: " + val);
+const debounce = (callback, wait) => {
+  let timeoutId = null;
+  return (...args) => {
+    window.clearTimeout(timeoutId);
+    timeoutId = window.setTimeout(() => {
+      callback(...args);
+    }, wait);
+  };
 }
 
-
-const pesquisar = document.getElementById('pesquisar');
-
-pesquisar.addEventListener("input", (e) => {
+const refechRegisters = (e) => {
+  
   const elementsToRemove = document.getElementsByClassName('container2')
   while(elementsToRemove.length > 0) {
     elementsToRemove[0].parentNode.removeChild(elementsToRemove[0]);
   }
 
   loadAllRegisters(true, e.target.value)
-}, false);
+
+}
+
+
+const pesquisar = document.getElementById('pesquisar');
+
+pesquisar.addEventListener("input",debounce(refechRegisters, 1000) ,false);
 
 
 loadAllRegisters();
